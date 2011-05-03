@@ -51,7 +51,22 @@ Example
 
 [http://jsfiddle.net/dimitar/6creP/](http://jsfiddle.net/dimitar/6creP/)
 
+Events and pointers
+-------------------
+
+The following events are raised that youcan reference from your instance
+
+- onOpen - fires when doBox opens.
+- onContentLoaded - fires on setHTML method
+- onBeforeClose - fires before clean up when closing so you can garbage collect or whatever
+- onClose - fires after the box is closed
+- onMoving - fires when moving the box starts
+- onMoved - fires when stopped moving
+
+`this.modal` stores a pointer to the instance for scripting.
+`this.wrap` stores a pointer to the instance for scripting
+
 Known issues
 ------------
 
-- not tested on Opera
+- not tested on Opera but should work.
