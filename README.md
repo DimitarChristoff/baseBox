@@ -45,6 +45,12 @@ Within your **domready** or **load** callback function, create an instance with 
     // open it.
     box.doBox("<h2>sub window</h2>", "<div class='moto shadowy'>this is a sub window from main</div><center><img class='closeThis cur' src='http://www.webtogs.co.uk/img/modal_close2.png' /></center>");
 
+
+Example
+-------
+
+[http://jsfiddle.net/dimitar/6creP/](http://jsfiddle.net/dimitar/6creP/)
+
 Known issues
 ------------
 
