@@ -15,8 +15,10 @@ A MooTools 1.3 modal box class which works fine with CSS3 features like:
 
 Tested on
 ---------
-IE6*, IE7*, IE8*, IE9**, FF3, FF4, Chromium 10, Safari 4.0.4
+IE6, IE7, IE8, IE9, FF3, FF4, Chromium 10, Safari 4.0.4
 
+**note**: IE6, IE7 and IE8 just fade the box up and need CSS ruleset to fall back on,
+like (background-image: url(yourgradient.gif); and so forth).
 
 How to use
 ----------
