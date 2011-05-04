@@ -114,14 +114,3 @@ div.moto {
     -ms-box-shadow: inset 1px 1px 15px #000;
     box-shadow: inset 1px 1px 15px #000;
 }
-div.LightBoxBodyOuter {
-
-}
-
-div.LightBoxBody {
-    padding: 10px;
-}
-
-img.bordered {
-    border: 1px solid #000;
-}
