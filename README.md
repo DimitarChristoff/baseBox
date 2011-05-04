@@ -43,7 +43,7 @@ Within your **domready** or **load** callback function, create an instance with 
     });
 
     // open it.
-    box.doBox("<h2>sub window</h2>", "<div class='moto shadowy'>this is a sub window from main</div><center><img class='closeThis cur' src='http://www.webtogs.co.uk/img/modal_close2.png' /></center>");
+    box.doBox("<h2>sub window</h2>", "<div class='moto shadowy'>this is a sub window from main</div><center><img class='closeThis cur' src='/img/modal_close.png' /></center>");
 
 
 Example
@@ -69,10 +69,16 @@ The following events are raised that youcan reference from your instance
 Extendability
 -------------
 
+![Screenshot](http://fragged.org/img/baseLightBox.jpg)
+
 This also provides baseBox.lightBox - a mini class that extends baseBox as an example and
 displays an image in a lightbox style modal. [View extended example](http://jsfiddle.net/dimitar/6creP/36/)
 
-Known issues
-------------
+    window.addEvent("domready", function() {
+        new baseBox.lightBox("http://i.dailymail.co.uk/i/pix/2011/05_01/rihannabey1_302x322.jpg");
+    });
 
-- not tested on Opera but should work.
+The lightbox version relies on Asset.js (it is but an example) and will lazyload the image, determine
+the size and set with lightBox width then compute the height automatically as per usual.
+
+You can add logic here that reduces image dimensions to fit the window width and height without scrolling.
