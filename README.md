@@ -70,7 +70,7 @@ Extendability
 -------------
 
 This also provides baseBox.lightBox - a mini class that extends baseBox as an example and
-displays an image in a lightbox style modal. [View extended example](http://jsfiddle.net/dimitar/6creP/35/)
+displays an image in a lightbox style modal. [View extended example](http://jsfiddle.net/dimitar/6creP/36/)
 
 Known issues
 ------------
