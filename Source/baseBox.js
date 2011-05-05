@@ -21,6 +21,7 @@ provides: [baseBox]
 ...
 */
 (function() {
+    // internals to do with allowing mootools to parse and modify transform2d scale
 
     Element.Styles.MozTransform = "rotate(@deg) scale(@)";
     Element.Styles.MsTransform = "rotate(@deg) scale(@)";
@@ -43,46 +44,51 @@ provides: [baseBox]
 
     });
 
-
+    // class baseBox start
     this.baseBox = new Class({
+
         Implements: [Options, Events],
+
         options: {
-            boxTitle: "baseBoxTitle",
-            warpClass: "baseBox",
-            boxBodyOuter: "",
-            boxBody: "",
-            shadowClass: "farShadow",
-            closeClass: "baseBoxClose",
-            outerClose: false,
-            scroll: "hidden",
-            movable: true,
-            centered: true,
-            offsets: {
+            // element: document.body       // required!
+            boxTitle: "baseBoxTitle",       // css title class
+            warpClass: "baseBox",           // main box wrap css class
+            boxBodyOuter: "",               // an outer body content css class
+            boxBody: "",                    // inner body content css class
+            shadowClass: "farShadow",       // drop shadow class - applied to warpClass el
+            closeClass: "baseBoxClose",     // cssing the close class
+            outerClose: false,              // can position a close outside the box
+            scroll: "hidden",               // by default, no scrolling. can be hidden|auto
+            movable: true,                  // use Drag.Move with title as handle
+            centered: true,                 // try to center the box...
+            offsets: {                      // ... or offset it by:
                 x: 0,
                 y: 0
-            },
-            autoHeight: false,
-            borderRadius: false,
-            // css based.
+            },                              // ... from parent element.
+            autoHeight: false,              // try to work out height based upon BLOCK content
+            borderRadius: false,            // should be deprecated, use CSS classes instead
+            // css based transfrom properties.
             transforms: {
                 computed: ['transformProperty', 'WebkitTransform', 'MozTransform', 'OTransform', 'msTransform'],
                 raw: ['transform', '-webkit-transform', '-moz-transform', '-o-transform', 'msTransform']
             },
-            modal: { // options to do with modal div.
-                enabled: true,
-                background: "#fff",
+            modal: {                        // options to do with modal div.
+                enabled: true,              // use or not.
+                background: "#fff",         // colour or eg, #fff url(spinner.gif) no-repeat center center
                 // default colour for modal tint
-                zIndex: 100000000,
-                opacity: ".7",
-                events: Function.from() // for example, onclick you may want to close all.
+                zIndex: 100000000,          // z-index for modal
+                opacity: ".7",              // default opacity
+                events: Function.from()     // for example, onclick you may want to close all.
             }
         },
         initialize: function(options) {
+            // constructor. nothing much happens by default (due to extend). use .doBox
             this.setOptions(options);
             this.detectTransforms();
             this.element = this.options.element || $(document.body);
         },
         detectTransforms: function() {
+            // do some feature detection to detrmine what scale transform methods are available
             var testEl = new Element("div"),
                 self = this;
             this.scaleTransform = this.options.transforms.computed.some(function(el, index) {
@@ -99,6 +105,8 @@ provides: [baseBox]
             }
         },
         doBox: function(title, what) {
+            // where the magic happens. creates the box and shows it on-screen.
+
             var self = this,
                 coords;
 
@@ -185,16 +193,12 @@ provides: [baseBox]
 
             this.box = new Element("div", {
                 styles: {
-                    width: this.options.width,
                     height: this.options.height
                 },
                 "class": this.options.boxBodyOuter
             }).inject(this.wrap);
 
             this.body = new Element("div", {
-                styles: {
-                    width: this.options.width
-                },
                 "class": this.options.boxBody
             }).inject(this.box);
 
@@ -289,7 +293,8 @@ provides: [baseBox]
             this.wrap.store("instance", this);
         },
         getHeight: function(title, what) {
-
+            // returns the height of the content given the existing title and content
+            // width needs to be set properly
             var height = this.options.height || 0;
             if (this.options.autoHeight) {
                 var tester = new Element("div", {
@@ -318,6 +323,48 @@ provides: [baseBox]
 
             this.options.height = height;
         },
+        resizeBox: function(newWidth, newHeight, complete) {
+            // a method that can resize an open modal box and repositions
+            // the complete argument is a callback but you can also use
+            // the onResize event instead.
+
+            var self = this, titleHeight = this.title.getSize().y;
+
+            // margins.
+            var coords = (this.options.centered)
+                ? this.centerBox(newWidth, newHeight + titleHeight)
+                : this.options.offsets;
+
+            this.wrap.set("morph", {
+                duration: 200,
+                onStart: function() {
+                    self.body.setStyle("display", "none");
+                },
+                onComplete: function() {
+                    self.setOptions({
+                        width: newWidth,
+                        height: newHeight + titleHeight
+                    });
+
+                    self.body.setStyles({
+                        "height": newHeight,
+                        "display": "block"
+                    });
+
+                    if (typeOf(complete) == "function") {
+                        complete.apply(this);
+                    }
+
+                    this.removeEvents("complete");
+                    self.fireEvent("resize");
+                }
+            }).morph({
+                width: coords.width,
+                height: coords.height,
+                marginLeft: coords.x,
+                marginTop: coords.y
+            });
+        },
         setHTML: function(what) {
             this.wrap.setStyle("height", this.options.height);
             this.body.set("html", what);
@@ -327,6 +374,7 @@ provides: [baseBox]
             this.title.set("html", title);
         },
         showBox: function() {
+            // open the instance via morphing scale if possible or just fade
             var self = this,
                 obj = {
                     opacity: [0, 1]
@@ -345,7 +393,7 @@ provides: [baseBox]
 
         },
         closeBox: function(e) {
-            // important!
+            // close the instance and clean up.
             if (e && e.stopPropagation) {
                 e.stopPropagation();
             }
@@ -370,7 +418,7 @@ provides: [baseBox]
             }).morph(obj);
         },
         centerBox: function(width, height) {
-            // returns a coordinates JSON for positioning of a box in the centre of the browser
+            // returns a coordinates object for positioning of a box in the centre of an element / browser
             var winSize = this.element.getSize();
             var winScroll = this.element.getScroll();
             var windowHeight = this.element.getScrollHeight() - 1;
@@ -419,4 +467,4 @@ provides: [baseBox]
         }
 
     }); // end baseBox class
-})();
+})(); // end closure
