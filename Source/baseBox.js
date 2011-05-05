@@ -6,7 +6,7 @@ version: 1.15
 authors:
   - Dimitar Christoff
 
- requires:
+requires:
 
   - Core/Class.Extras
   - Core/Element.Event
@@ -19,6 +19,7 @@ authors:
 license: MIT-style license
 
 provides: [baseBox]
+
 ...
 */
 (function() {
