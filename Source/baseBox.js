@@ -2,11 +2,12 @@
 ---
 name: baseBox
 description: a MooTools 1.3 modal box class, powered by CSS and with scale transitions
-version: 1.0.1
+version: 1.15
 authors:
   - Dimitar Christoff
 
-requires:
+ requires:
+
   - Core/Class.Extras
   - Core/Element.Event
   - Core/Element.Style
@@ -335,6 +336,8 @@ provides: [baseBox]
                 ? this.centerBox(newWidth, newHeight + titleHeight)
                 : this.options.offsets;
 
+            var oldDuration = this.wrap.get("morph").options.duration;
+           
             this.wrap.set("morph", {
                 duration: 200,
                 onStart: function() {
@@ -355,7 +358,9 @@ provides: [baseBox]
                         complete.apply(this);
                     }
 
-                    this.removeEvents("complete");
+                    this.removeEvents("complete").setOptions({
+                        duration: oldDuration
+                    });
                     self.fireEvent("resize");
                 }
             }).morph({
