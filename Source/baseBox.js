@@ -2,7 +2,7 @@
 ---
 name: baseBox
 description: a MooTools 1.3 modal box class, powered by CSS and with scale transitions
-version: 1.0.1
+version: 1.15
 authors:
   - Dimitar Christoff
 
