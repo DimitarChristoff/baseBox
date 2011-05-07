@@ -15,7 +15,7 @@ A MooTools 1.3 modal box class which works fine with CSS3 features like:
 
 Tested on
 ---------
-IE6, IE7, IE8, IE9, FF3, FF4, Chromium 10, Safari 4.0.4
+IE6, IE7, IE8, IE9, FF3, FF4, Chrome 11, Safari 4.0.4, Opera 11.10
 
 **note**: IE6, IE7 and IE8 just fade the box up and need CSS ruleset to fall back on,
 like (background-image: url(yourgradient.gif); and so forth).
@@ -56,20 +56,19 @@ Events and pointers
 
 The following events are raised that youcan reference from your instance
 
-- onOpen - fires when doBox opens.
-- onContentLoaded - fires on setHTML method
-- onBeforeClose - fires before clean up when closing so you can garbage collect or whatever
-- onClose - fires after the box is closed
-- onMoving - fires when moving the box starts
-- onMoved - fires when stopped moving
+- `onOpen` - fires when doBox opens.
+- `onContentLoaded` - fires on setHTML method
+- `onBeforeClose` - fires before clean up when closing so you can garbage collect or whatever
+- `onClose` - fires after the box is closed
+- `onMoving` - fires when moving the box starts
+- `onMoved `- fires when stopped moving
+- `onResize` - fires after resizeBox has modified the baseBox dimensions
 
 `this.modal` stores a pointer to the instance for scripting.
 `this.wrap` stores a pointer to the instance for scripting
 
 Extendability
 -------------
-
-![Screenshot](http://fragged.org/img/baseLightBox.jpg)
 
 This also provides baseBox.lightBox - a mini class that extends baseBox as an example and
 displays an image in a lightbox style modal. [View extended example](http://jsfiddle.net/dimitar/6creP/36/)
@@ -82,3 +81,9 @@ The lightbox version relies on Asset.js (it is but an example) and will lazyload
 the size and set with lightBox width then compute the height automatically as per usual.
 
 You can add logic here that reduces image dimensions to fit the window width and height without scrolling.
+
+Screenshots
+-----------
+![Screenshot](http://fragged.org/img/baseLightBox.jpg)
+
+![Screenshot](http://fragged.org/img/baseBoxSShot2.jpg)
