@@ -14,6 +14,7 @@ requires:
   - Core/Element.Morph
   - More/Element.Delegation
   - More/Drag.move
+  - More/Assets
   - baseBox
 
 license: MIT-style license
