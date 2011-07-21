@@ -2,11 +2,12 @@
 ---
 name: baseBox
 description: a MooTools 1.3 modal box class, powered by CSS and with scale transitions
-version: 1.15
+version: 1.16
 authors:
   - Dimitar Christoff
 
-requires:
+ requires:
+
   - Core/Class.Extras
   - Core/Element.Event
   - Core/Element.Style
@@ -198,16 +199,18 @@ provides: [baseBox]
                 "class": this.options.boxBodyOuter
             }).inject(this.wrap);
 
-            this.body = new Element("div", {
-                "class": this.options.boxBody
-            }).inject(this.box);
-
             this.title = new Element("div", {
                 "class": this.options.boxTitle,
                 styles: {
                     zIndex: this.options.modal.zIndex + 2
                 }
             }).inject(this.box, "top");
+
+            this.body = new Element("div", {
+                "class": this.options.boxBody
+            }).inject(this.box);
+
+
 
             this.setTitle(title);
 
@@ -286,7 +289,8 @@ provides: [baseBox]
 
             this.body.setStyles({
                 "overflow-y": this.options.scroll,
-                "overflow-x": "hidden"
+                "overflow-x": "hidden",
+                "height": this.options.height - this.title.getSize().y || "auto"
             });
 
             this.showBox();
@@ -335,6 +339,8 @@ provides: [baseBox]
                 ? this.centerBox(newWidth, newHeight + titleHeight)
                 : this.options.offsets;
 
+            var oldDuration = this.wrap.get("morph").options.duration;
+
             this.wrap.set("morph", {
                 duration: 200,
                 onStart: function() {
@@ -355,7 +361,9 @@ provides: [baseBox]
                         complete.apply(this);
                     }
 
-                    this.removeEvents("complete");
+                    this.removeEvents("complete").setOptions({
+                        duration: oldDuration
+                    });
                     self.fireEvent("resize");
                 }
             }).morph({
