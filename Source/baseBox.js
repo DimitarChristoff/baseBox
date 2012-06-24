@@ -6,8 +6,7 @@ version: 1.16
 authors:
   - Dimitar Christoff
 
- requires:
-
+requires:
   - Core/Class.Extras
   - Core/Element.Event
   - Core/Element.Style
